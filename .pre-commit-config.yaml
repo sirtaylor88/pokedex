@@ -1,0 +1,29 @@
+default_language_version:
+  # default language version for each language
+  python: python3.8
+repos:
+    - repo: https://github.com/ambv/black
+      rev: 22.1.0
+      hooks:
+        - id: black
+          language_version: python3
+          exclude: ^.*\b(migrations)\b.*$
+          args: # arguments to configure black
+            - --line-length=79
+    - repo: git://github.com/pre-commit/pre-commit-hooks
+      rev: v4.0.1
+      hooks:
+        - id: trailing-whitespace
+        - id: detect-private-key
+        - id: debug-statements
+        - id: check-yaml
+        - id: end-of-file-fixer
+        - id: check-ast
+        - id: check-json
+        - id: check-docstring-first
+        - id: check-added-large-files
+        - id: check-merge-conflict
+    - repo: https://github.com/pre-commit/mirrors-isort
+      rev: 'v5.9.3'
+      hooks:
+        - id: isort

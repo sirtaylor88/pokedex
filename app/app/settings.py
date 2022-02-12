@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Local applications
     "core",
+    "api",
+    # External applications
+    "django_filters",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -130,3 +134,9 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Pagination Settings
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 50,
+}

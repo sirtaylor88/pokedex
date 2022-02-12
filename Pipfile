@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 Django = ">=3.2.0,<3.3.0"
+django-filter = "==21.1"
 djangorestframework = ">=3.13.0,<3.14.0"
 flake8 = ">=4.0.0, <4.1.0"
 pipfile-sort = "==0.2.2"

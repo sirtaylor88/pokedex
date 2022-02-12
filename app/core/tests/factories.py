@@ -12,7 +12,7 @@ class PokedexCreatureFactory(DjangoModelFactory):
     class Meta:
         model = PokedexCreature
 
-    name = factory.Sequence("")
+    name = factory.Sequence(lambda n: f"Creature {n + 1}")
     ref_number = randint(1, 750)
     type_1 = "Poison"
     total = randint(100, 999)

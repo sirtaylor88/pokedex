@@ -23,7 +23,3 @@ repos:
         - id: check-docstring-first
         - id: check-added-large-files
         - id: check-merge-conflict
-    - repo: https://github.com/pre-commit/mirrors-isort
-      rev: 'v5.9.3'
-      hooks:
-        - id: isort

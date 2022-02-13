@@ -33,7 +33,7 @@ A Pokemon management app
     docker-compose up
 ### Run test
 
-    docker-compose run --rm  app sh -c "pytest"
+    docker-compose run --rm  app sh -c "pytest -n auto --cov"
 
 ### Rebuild docker image
     docker build . --tag pokedex-docker

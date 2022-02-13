@@ -14,7 +14,7 @@ from rest_framework import status
 
 
 class PokedexViewSet(ReadOnlyModelViewSet):
-    """Display all Pokedex Creatures"""
+    """API endpoint to display all Pokedex Creatures"""
 
     queryset = PokedexCreature.objects.all()
     serializer_class = PokedexCreatureSerializer
@@ -30,7 +30,7 @@ class PokedexViewSet(ReadOnlyModelViewSet):
 
 
 class PokemonViewSet(ModelViewSet):
-    """Manage a pokemon"""
+    """API endpoint to manage a pokemon"""
 
     queryset = Pokemon.objects.all()
     serializer_class = PokemonSerializer
@@ -38,7 +38,7 @@ class PokemonViewSet(ModelViewSet):
 
     @action(methods=["POST"], detail=True, url_path="give_xp")
     def give_xp(self, request, pk=None):
-        """Give experience points to a pokemon"""
+        """Action to give extra experience points to a pokemon"""
         pokemon = self.get_object()
         amount = request.POST.get("amount", None)
         if amount:

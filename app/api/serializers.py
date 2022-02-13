@@ -29,6 +29,8 @@ class PokedexCreatureDetailSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """Serializer to retrieve an user"""
+
     class Meta:
         model = settings.AUTH_USER_MODEL
         fields = ["id", "username", "email"]
@@ -53,6 +55,7 @@ class PokemonSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "level", "experience")
 
     def validate(self, attrs):
+        """Add pokemon surname if no surname is given"""
         surname = attrs.get("surname")
         pokedex_creature = attrs.get("pokedex_creature")
         if not surname:

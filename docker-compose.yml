@@ -8,6 +8,8 @@ services:
       - "8000:8000"
     volumes:
       - ./app:/app
+    image: app:pokedex_django
+    container_name: pokedex_django_container
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000 &&
         python manage.py wait_for_db &&
@@ -25,7 +27,10 @@ services:
 
   db:
     image: postgres:14.2-alpine
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=app
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=supersecretpassword
+    container_name: pokedex_django_postgres_db

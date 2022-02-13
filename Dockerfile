@@ -1,4 +1,4 @@
-FROM python:3.7-alpine3.14
+FROM python:3.8.12-alpine3.15
 LABEL Nhat Tai NGUYEN
 
 ENV PYTHONUNBUFFERED 1

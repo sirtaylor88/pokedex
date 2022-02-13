@@ -2,12 +2,12 @@ from api.filters import PokedexCreatureFilter
 from api.serializers import (
     PokedexCreatureDetailSerializer,
     PokedexCreatureSerializer,
+    PokemonSerializer,
 )
-from core.models import PokedexCreature
+from core.models import PokedexCreature, Pokemon
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
 
 class PokedexViewSet(ReadOnlyModelViewSet):
@@ -16,7 +16,7 @@ class PokedexViewSet(ReadOnlyModelViewSet):
     queryset = PokedexCreature.objects.all()
     serializer_class = PokedexCreatureSerializer
     filter_backends = (DjangoFilterBackend,)
-    filter_class = PokedexCreatureFilter
+    filterset_class = PokedexCreatureFilter
 
     def get_serializer_class(self):
         """Return appropriate serializer class"""
@@ -24,3 +24,11 @@ class PokedexViewSet(ReadOnlyModelViewSet):
             return PokedexCreatureDetailSerializer
 
         return self.serializer_class
+
+
+class PokemonViewSet(ModelViewSet):
+    """Manage a pokemon"""
+
+    queryset = Pokemon.objects.all()
+    serializer_class = PokemonSerializer
+    permission_classes = (IsAuthenticated,)

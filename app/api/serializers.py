@@ -1,4 +1,5 @@
-from core.models import PokedexCreature
+from core.models import PokedexCreature, Pokemon
+from django.conf import settings
 from rest_framework import serializers
 
 
@@ -25,3 +26,36 @@ class PokedexCreatureDetailSerializer(serializers.ModelSerializer):
         model = PokedexCreature
         fields = "__all__"
         read_only_fields = ("id",)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = settings.AUTH_USER_MODEL
+        fields = ["id", "username", "email"]
+
+
+class PokemonSerializer(serializers.ModelSerializer):
+    """Serializer of Pokemon object"""
+
+    pokedex_creature = PokedexCreatureDetailSerializer
+    trainer = UserSerializer
+
+    class Meta:
+        model = Pokemon
+        fields = (
+            "id",
+            "pokedex_creature",
+            "trainer",
+            "surname",
+            "level",
+            "experience",
+        )
+        read_only_fields = ("id", "level", "experience")
+
+    def validate(self, attrs):
+        surname = attrs.get("surname")
+        pokedex_creature = attrs.get("pokedex_creature")
+        if not surname:
+            attrs["surname"] = pokedex_creature.name
+
+        return super().validate(attrs)

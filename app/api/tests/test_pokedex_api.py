@@ -11,7 +11,7 @@ from rest_framework.test import APIClient
 pytestmark = pytest.mark.django_db
 
 
-def test_lisitng_pokedex_creatures(client, pokedex_creature_factory):
+def test_listing_pokedex_creatures(pokedex_creature_factory):
     """Test listing Pokedex creatures."""
 
     # Create 2 creatures
@@ -28,7 +28,7 @@ def test_lisitng_pokedex_creatures(client, pokedex_creature_factory):
     assert serializer.data == res.data.get("results")
 
 
-def test_view_pokedex_creature_detail(client, pokedex_creature_factory):
+def test_view_pokedex_creature_detail(pokedex_creature_factory):
     """Test retrieving a Pokedex creature"""
 
     # Create 3 creatures

@@ -72,7 +72,10 @@ def test_create_pokemon(
         "trainer": user_log.id,
         "surname": "Gozilla",
     }
-    res = client_log.post(reverse("api:pokemon-list"), payload)
+    res = client_log.post(
+        reverse("api:pokemon-list"),
+        payload,
+    )
     assert res.status_code == status.HTTP_201_CREATED
 
     pokemon = Pokemon.objects.get(id=res.data["id"])
@@ -83,7 +86,10 @@ def test_create_pokemon(
     payload = {
         "pokedex_creature": creature.id,
     }
-    res = client_log.post(reverse("api:pokemon-list"), payload)
+    res = client_log.post(
+        reverse("api:pokemon-list"),
+        payload,
+    )
     assert res.status_code == status.HTTP_201_CREATED
 
     pokemon = Pokemon.objects.get(id=res.data["id"])
@@ -95,7 +101,8 @@ def test_partial_update_pokemon(client_log, pokemon_factory):
     pokemon = pokemon_factory(surname="Lion")
     payload = {"surname": "Monster king"}
     res = client_log.patch(
-        reverse("api:pokemon-detail", args=[pokemon.id]), payload
+        reverse("api:pokemon-detail", args=[pokemon.id]),
+        payload,
     )
     assert res.status_code == status.HTTP_200_OK
     pokemon.refresh_from_db()
@@ -114,7 +121,8 @@ def test_full_update_pokemon(
         "pokedex_creature": creature.id,
     }
     res = client_log.put(
-        reverse("api:pokemon-detail", args=[pokemon.id]), payload
+        reverse("api:pokemon-detail", args=[pokemon.id]),
+        payload,
     )
     assert res.status_code == status.HTTP_200_OK
     pokemon.refresh_from_db()
@@ -131,3 +139,50 @@ def test_delete_pokemon(client_log, pokemon_factory):
     assert res.status_code == status.HTTP_204_NO_CONTENT
 
     assert not Pokemon.objects.filter(id=pokemon.id).exists()
+
+
+def test_give_xp_to_pokemon(client_log, pokemon_factory):
+    """Authenticated user can give XP to an existing pokermon"""
+    pokemon = pokemon_factory(level=1, experience=40)
+
+    payload = {
+        "amount": 150,
+    }
+    res = client_log.post(
+        reverse("api:pokemon-give-xp", args=[pokemon.id]),
+        payload,
+    )
+    assert res.status_code == status.HTTP_200_OK
+
+    pokemon = Pokemon.objects.get(id=pokemon.id)
+    pokemon.refresh_from_db()
+
+    assert pokemon.level == 2
+    assert pokemon.experience == 190
+
+
+def test_give_xp_to_pokemon_invalid_request(client_log, pokemon_factory):
+    """Authenticated user can give XP to an existing pokermon"""
+    pokemon = pokemon_factory(level=1, experience=40)
+
+    payload = {
+        "amount": "Hello",
+    }
+    res = client_log.post(
+        reverse("api:pokemon-give-xp", args=[pokemon.id]),
+        payload,
+    )
+    assert res.status_code == status.HTTP_400_BAD_REQUEST
+    assert res.data == {
+        "amount": "invalid literal for int() with base 10: 'Hello'"
+    }
+
+    payload = {
+        "attack": 100,
+    }
+    res = client_log.post(
+        reverse("api:pokemon-give-xp", args=[pokemon.id]),
+        payload,
+    )
+    assert res.status_code == status.HTTP_400_BAD_REQUEST
+    assert res.data == {"reason": "Bad request"}

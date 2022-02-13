@@ -24,7 +24,7 @@ class PokedexCreature(models.Model):
         ordering = ["name"]
 
     def __str__(self):
-        """Return object name"""
+        """Return creature name"""
         return self.name
 
 
@@ -53,11 +53,30 @@ class Pokemon(models.Model):
     experience = models.PositiveIntegerField(default=0)
 
     def clean(self):
+        """
+        Set default surname to related pokedex creature name
+        if no surname is given
+        """
+
         if not self.surname:
             self.surname = self.pokedex_creature.name
         return super().clean()
 
     def __str__(self):
+        """
+        Return Pokermon name with the trainer username if it has one
+
+        Return Pokermon name (wild) if not
+        """
+
         return "{} ({})".format(
             self.surname, self.trainer.username if self.trainer else "wild"
         )
+
+    def receive_xp(self, amount: int) -> None:
+        """
+        Update pokemon level based on the XP is received
+        """
+        self.experience += amount
+        self.level = 1 + self.experience // 100
+        self.save()

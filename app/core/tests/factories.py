@@ -41,11 +41,9 @@ class PokemonFactory(DjangoModelFactory):
     experience = 0
 
     @factory.post_generation
-    def set_surname(obj, create, extracted, **kwargs):
-        """Use creature name as default if no surname is given"""
-        if not obj.surname:
-            obj.surname = obj.pokedex_creature.name
-            obj.save()
+    def clean(obj, create, extracted, **kwargs):
+        """Call pokemon model clean method"""
+        obj.clean()
 
 
 class UserFactory(DjangoModelFactory):

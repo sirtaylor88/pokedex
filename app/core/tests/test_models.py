@@ -31,6 +31,13 @@ def test_pokemon_str(
     assert str(pokemon_3) == "Reaper (tai)"
 
 
+def test_pokemon_clean(pokedex_creature_factory, pokemon_factory) -> None:
+    """Test pokemon clean method"""
+    creature = pokedex_creature_factory(name="Zebra")
+    pokemon = pokemon_factory(pokedex_creature=creature)
+    assert pokemon.surname == creature.name
+
+
 @pytest.mark.parametrize(
     "xp, expected_level, expected_experience",
     [

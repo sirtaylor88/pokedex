@@ -2,26 +2,15 @@
 A Pokemon management app
 
 ## How to use
-### View a list of Pokedex Creatures
 
-    GET /pokedex/
-### Retrieve a specific Pokedex creature
-    GET /pokedex/{id}/
+### Get schema.yaml
+    schema/
 
-### View a list of Pokemons (login required)
-    GET /pokemon/
+### Swagger like page
+    schema/swagger-ui/
 
-### Create a Pokemon (login required)
-    POST /pokemon/
-
-### Update a Pokemon (login required)
-    PATCH /pokemon/{id}/
-    PUT /pokemon/{id}/
-
-### Delete a Pokemon (login required)
-    DELETE /pokemon/{id}/
-### Give XP to a pokemon (login required)
-    POST /pokemon/{id}/give-xp/
+### Documentation page
+    schema/redoc/
 
 
 ## Commands
@@ -29,14 +18,15 @@ A Pokemon management app
 ### Import Pokemon csv
     docker-compose run  app sh -c "python manage.py import_csv <path/to/file>"
 ### Run Docker container
-
     docker-compose up
 ### Run test
-
     docker-compose run --rm  app sh -c "pytest -n auto --cov"
 
 ### Rebuild docker image
     docker build . --tag pokedex-docker
 ### Rebuild docker services
-
     docker-compose build
+
+### Generate DRF spectacular schema
+    docker-compose run --rm app sh -c "python manage.py spectacular --file schema.yml"
+    docker run -p 80:8080 -e SWAGGER_JSON=/schema.yml -v ${PWD}/schema.yml:/schema.yml swaggerapi/swagger-ui

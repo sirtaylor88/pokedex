@@ -52,6 +52,12 @@ def test_import_other_csv_file(capsys) -> None:
     expected = "Nb of creatures imported to the database: 4.\n"
     assert expected == capsys.readouterr().out
 
+    creature_1 = PokedexCreature.objects.get(name="Bulbasaur")
+    assert creature_1.legendary is True
+
+    creature_2 = PokedexCreature.objects.get(name="Ivysaur")
+    assert creature_2.legendary is False
+
 
 @pytest.mark.django_db
 def test_import_invalid_csv_file(capsys) -> None:

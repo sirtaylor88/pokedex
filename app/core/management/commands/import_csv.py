@@ -43,7 +43,7 @@ class Command(BaseCommand):
                         special_defence=int(row[9]),
                         speed=int(row[10]),
                         generation=int(row[11]),
-                        legendary=bool(row[12]),
+                        legendary=(row[12] == "True"),
                     )
                     for row in reader
                 ]
